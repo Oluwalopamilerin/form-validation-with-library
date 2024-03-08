@@ -1,0 +1,39 @@
+.form-input{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.input{
+  padding: 15px;
+  margin: 10px 0;
+  outline: none;
+  border:none;
+  border-radius: 6px;
+  width: 100%;
+}
+
+.input[data-lastpass-icon-root] {
+  display: none;
+}
+
+.eye-icon{
+ position: absolute;
+right: 1rem;
+bottom: 22px;
+}
+
+.error-msg{
+  font-size: 12px;
+  color: rgb(255, 0, 0);
+  padding: 3px;
+  /* display: none; */
+}
+
+/* input:invalid[focused="true"]{
+  border: 1px solid red;
+}
+
+input:invalid[focused="true"] ~ .error-msg{
+  display: block;
+} */
