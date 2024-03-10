@@ -43,11 +43,11 @@ const FormInput = (props) => {
             {...inputProps}
             onChange={onChange}
             className="input"
-            onBlur={handleFocus}
-            onFocus={() =>
-              inputProps.name === "confirmPassword" && setFocused(true)
-            }
-            focused={focused.toString()}
+            // onBlur={handleFocus}
+            // onFocus={() =>
+            //   inputProps.name === "confirmPassword" && setFocused(true)
+            // }
+            // focused={focused.toString()}
             type={
               inputProps.name === "password"
                 ? getPasswordType()
@@ -55,8 +55,7 @@ const FormInput = (props) => {
             }
           />
         </div>
-
-        <span className="error-msg">{errorMessage}</span>
+        <span className="error-msg">{errorMessage && errorMessage}</span>
       </div>
     </>
   );
