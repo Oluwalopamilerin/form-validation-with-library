@@ -1,133 +1,159 @@
 import React, { useState } from "react";
+import { useFormik } from "formik";
+
 import FormInput from "../../components/FormInput/FormInput";
 
 import { inputsArr } from "./Form.data";
+import { signUpSchema } from "../../schemas";
 
 import "./Form.css";
 
-const usernameRegex = RegExp(/^[A-Za-z0-9]{3,16}$/);
-const emailRegex = RegExp(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/);
-const passwordRegex = RegExp(
-  /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/
-);
+// const usernameRegex = RegExp(/^[A-Za-z0-9]{3,16}$/);
+// const emailRegex = RegExp(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/);
+// const passwordRegex = RegExp(
+//   /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/
+// );
 
+const initialValues = {
+  username: "",
+  email: "",
+  birthday: "",
+  password: "",
+  confirmPassword: "",
+};
 const Form = () => {
-  const [values, setValues] = useState({
-    username: "",
-    email: "",
-    birthday: "",
-    password: "",
-    confirmPassword: "",
-    errors: {
-      username: "",
-      email: "",
-      birthday: "",
-      password: "",
-      confirmPassword: "",
+  const {
+    values,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+    errors,
+    touched,
+    submitCount,
+  } = useFormik({
+    initialValues,
+    validationSchema: signUpSchema,
+    onSubmit: (values, actions) => {
+      console.log(values);
+      actions.resetForm();
     },
   });
 
-  const [errorMsg, setErrorMsg] = useState("");
+  const inputs = inputsArr({ values, errors, submitCount });
+  // const [values, setValues] = useState({
+  //   username: "",
+  //   email: "",
+  //   birthday: "",
+  //   password: "",
+  //   confirmPassword: "",
+  //   errors: {
+  //     username: "",
+  //     email: "",
+  //     birthday: "",
+  //     password: "",
+  //     confirmPassword: "",
+  //   },
+  // });
 
-  const inputs = inputsArr({ values });
+  // const [errorMsg, setErrorMsg] = useState("");
 
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    const errors = values.errors;
+  // const onChange = (e) => {
+  //   const { name, value } = e.target;
+  //   const errors = values.errors;
 
-    switch (name) {
-      case "username":
-        errors.username = usernameRegex.test(value)
-          ? ""
-          : "Username should be 3-16 characters with no special characters.";
-        break;
-      case "email":
-        errors.email = emailRegex.test(value)
-          ? ""
-          : "Enter a valid email address.";
-        break;
-      case "password":
-        errors.password = passwordRegex.test(value)
-          ? ""
-          : "Password should be 8-20 characters and include at least a number, letter, and special character.";
-        break;
-      case "confirmPassword":
-        errors.confirmPassword =
-          value === values.password ? "" : "Password does not match.";
-        break;
-      default:
-        break;
-    }
-    setValues(() => ({
-      ...values,
-      errors,
-      [name]: value,
-    }));
-  };
+  //   switch (name) {
+  //     case "username":
+  //       errors.username = usernameRegex.test(value)
+  //         ? ""
+  //         : "Username should be 3-16 characters with no special characters.";
+  //       break;
+  //     case "email":
+  //       errors.email = emailRegex.test(value)
+  //         ? ""
+  //         : "Enter a valid email address.";
+  //       break;
+  //     case "password":
+  //       errors.password = passwordRegex.test(value)
+  //         ? ""
+  //         : "Password should be 8-20 characters and include at least a number, letter, and special character.";
+  //       break;
+  //     case "confirmPassword":
+  //       errors.confirmPassword =
+  //         value === values.password ? "" : "Password does not match.";
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //   setValues(() => ({
+  //     ...values,
+  //     errors,
+  //     [name]: value,
+  //   }));
+  // };
 
   const [loading, setLoading] = useState(false);
 
   const [isSubmit, setIsSubmit] = useState(false);
 
-  const isFormValues =
-    values?.username &&
-    values?.email &&
-    values?.birthday &&
-    values?.password &&
-    values?.confirmPassword;
-  console.log(isFormValues);
+  // const isFormValues =
+  //   values?.username &&
+  //   values?.email &&
+  //   values?.birthday &&
+  //   values?.password &&
+  //   values?.confirmPassword;
+  // console.log(isFormValues);
 
-  const isFormErrors =
-    values?.errors?.username ||
-    values?.errors?.email ||
-    values?.errors?.birthday ||
-    values?.errors?.password ||
-    values?.errors?.confirmPassword;
+  // const isFormErrors =
+  //   values?.errors?.username ||
+  //   values?.errors?.email ||
+  //   values?.errors?.birthday ||
+  //   values?.errors?.password ||
+  //   values?.errors?.confirmPassword;
 
-  const isDisableButton = !isFormValues || isFormErrors;
+  // const isDisableButton = !isFormValues || isFormErrors;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setTimeout(() => {
-      const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
-      if (
-        existingUsers.some((v) => {
-          return v.email === values.email;
-        })
-      ) {
-        alert("Email already exists");
-      } else {
-        existingUsers.push(values);
-        const serializedData = JSON.stringify(existingUsers);
-        localStorage.setItem("users", serializedData);
-      }
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+  //   setTimeout(() => {
+  //     const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+  //     if (
+  //       existingUsers.some((v) => {
+  //         return v.email === values.email;
+  //       })
+  //     ) {
+  //       alert("Email already exists");
+  //     } else {
+  //       existingUsers.push(values);
+  //       const serializedData = JSON.stringify(existingUsers);
+  //       localStorage.setItem("users", serializedData);
+  //     }
 
-      setValues({
-        username: "",
-        email: "",
-        birthday: "",
-        password: "",
-        confirmPassword: "",
-      });
-      setLoading(false);
-    }, 2000);
-  };
+  //     setValues({
+  //       username: "",
+  //       email: "",
+  //       birthday: "",
+  //       password: "",
+  //       confirmPassword: "",
+  //     });
+  //     setLoading(false);
+  //   }, 2000);
+  // };
 
   return (
     <div className="form-body">
-      <form onSubmit={handleSubmit} className="form" noValidate>
+      <form onSubmit={handleSubmit} className="form">
         <h2 className="title">Register</h2>
         {inputs?.map((input) => (
           <FormInput
             key={input.id}
             {...input}
             value={values[input.name]}
-            onChange={onChange}
+            onChange={handleChange}
           />
         ))}
-        <button className="btn" disabled={isDisableButton || loading}>
-          {loading ? "Submitting..." : "Submit"}
+        <button type="submit" className="btn">
+          Submit
         </button>
       </form>
     </div>
