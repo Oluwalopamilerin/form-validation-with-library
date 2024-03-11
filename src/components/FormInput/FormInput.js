@@ -4,7 +4,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./FormInput.css";
 
 const FormInput = (props) => {
-  const { label, id, onChange, errorMessage, ...inputProps } = props;
+  const { label, id, onChange, errorMessage, onBlur, ...inputProps } = props;
 
   const [focused, setFocused] = useState(false);
 
@@ -43,13 +43,9 @@ const FormInput = (props) => {
             {...inputProps}
             onChange={onChange}
             className="input"
-            // onBlur={handleFocus}
-            // onFocus={() =>
-            //   inputProps.name === "confirmPassword" && setFocused(true)
-            // }
-            // focused={focused.toString()}
+            onBlur={onBlur}
             type={
-              inputProps.name === "password"
+              inputProps.type === "password"
                 ? getPasswordType()
                 : inputProps.type
             }
