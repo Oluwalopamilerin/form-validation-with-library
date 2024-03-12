@@ -22,93 +22,38 @@ const initialValues = {
   confirmPassword: "",
 };
 const Form = () => {
-  const {
-    values,
-    handleBlur,
-    handleChange,
-    handleSubmit,
-    errors,
-    touched,
-    submitCount,
-  } = useFormik({
-    initialValues,
-    validationSchema: signUpSchema,
-    onSubmit: (values, actions) => {
-      console.log(values);
-      actions.resetForm();
-    },
-  });
+  const { values, handleBlur, handleChange, handleSubmit, errors, touched } =
+    useFormik({
+      initialValues,
+      validationSchema: signUpSchema,
+      onSubmit: (values, actions) => {
+        setLoading(true);
+        setTimeout(() => {
+          const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+          if (
+            existingUsers.some((v) => {
+              return v.email === values.email;
+            })
+          ) {
+            alert("Email already exists");
+          } else {
+            existingUsers.push(values);
+            const serializedData = JSON.stringify(existingUsers);
+            localStorage.setItem("users", serializedData);
+          }
 
-  const inputs = inputsArr({ values, errors, submitCount });
-  // const [values, setValues] = useState({
-  //   username: "",
-  //   email: "",
-  //   birthday: "",
-  //   password: "",
-  //   confirmPassword: "",
-  //   errors: {
-  //     username: "",
-  //     email: "",
-  //     birthday: "",
-  //     password: "",
-  //     confirmPassword: "",
-  //   },
-  // });
+          actions.resetForm();
+          setLoading(false);
+        }, 2000);
+      },
+    });
 
-  // const [errorMsg, setErrorMsg] = useState("");
-
-  // const onChange = (e) => {
-  //   const { name, value } = e.target;
-  //   const errors = values.errors;
-
-  //   switch (name) {
-  //     case "username":
-  //       errors.username = usernameRegex.test(value)
-  //         ? ""
-  //         : "Username should be 3-16 characters with no special characters.";
-  //       break;
-  //     case "email":
-  //       errors.email = emailRegex.test(value)
-  //         ? ""
-  //         : "Enter a valid email address.";
-  //       break;
-  //     case "password":
-  //       errors.password = passwordRegex.test(value)
-  //         ? ""
-  //         : "Password should be 8-20 characters and include at least a number, letter, and special character.";
-  //       break;
-  //     case "confirmPassword":
-  //       errors.confirmPassword =
-  //         value === values.password ? "" : "Password does not match.";
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  //   setValues(() => ({
-  //     ...values,
-  //     errors,
-  //     [name]: value,
-  //   }));
-  // };
+  const inputs = inputsArr({ values, errors, touched });
+  console.log(errors);
 
   const [loading, setLoading] = useState(false);
 
-  const [isSubmit, setIsSubmit] = useState(false);
-
-  // const isFormValues =
-  //   values?.username &&
-  //   values?.email &&
-  //   values?.birthday &&
-  //   values?.password &&
-  //   values?.confirmPassword;
-  // console.log(isFormValues);
-
-  // const isFormErrors =
-  //   values?.errors?.username ||
-  //   values?.errors?.email ||
-  //   values?.errors?.birthday ||
-  //   values?.errors?.password ||
-  //   values?.errors?.confirmPassword;
+  let isDisableButton = errors == {} ? console.log("Yeah") : true;
 
   // const isDisableButton = !isFormValues || isFormErrors;
 
@@ -150,10 +95,12 @@ const Form = () => {
             {...input}
             value={values[input.name]}
             onChange={handleChange}
+            onBlur={handleBlur}
+            touched={touched}
           />
         ))}
-        <button type="submit" className="btn">
-          Submit
+        <button className="btn" type="submit">
+          {loading ? "Submitting..." : "Submit"}
         </button>
       </form>
     </div>
