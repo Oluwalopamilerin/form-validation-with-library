@@ -1,11 +1,11 @@
-export const inputsArr = ({ values, errors, submitCount }) => {
+export const inputsArr = ({ values, errors, touched }) => {
   const inputs = [
     {
       id: 1,
       name: "username",
       type: "text",
       placeholder: "Username",
-      errorMessage: submitCount > 0 && errors?.username,
+      errorMessage: touched && errors?.username,
       label: "Username",
     },
     {
@@ -13,7 +13,7 @@ export const inputsArr = ({ values, errors, submitCount }) => {
       name: "email",
       type: "email",
       placeholder: "user@gmail.com",
-      errorMessage: submitCount > 0 && errors?.email,
+      errorMessage: touched && errors?.email,
       label: "Email",
     },
     {
@@ -28,7 +28,7 @@ export const inputsArr = ({ values, errors, submitCount }) => {
       name: "password",
       type: "password",
       placeholder: "Password",
-      errorMessage: submitCount > 0 && errors?.password,
+      errorMessage: touched && errors?.password,
       label: "Password",
     },
     {
@@ -36,7 +36,7 @@ export const inputsArr = ({ values, errors, submitCount }) => {
       name: "confirmPassword",
       type: "password",
       placeholder: "Confirm Password",
-      errorMessage: submitCount > 0 && errors?.confirmPassword,
+      errorMessage: touched && errors?.confirmPassword,
       label: "Confirm Password",
     },
   ];
