@@ -53,7 +53,7 @@ const Form = () => {
 
   const [loading, setLoading] = useState(false);
 
-  let isDisableButton = errors == {} ? console.log("Yeah") : true;
+  let isDisableButton = errors == {} ? console.log("Yes") : true;
 
   // const isDisableButton = !isFormValues || isFormErrors;
 
